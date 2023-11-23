@@ -1,0 +1,11 @@
+float64 probability
+int64 xmin
+int64 ymin
+int64 xmax
+int64 ymax
+int16 num
+string Class
+int16 CNum
+int16 ONum
+float64 xmid
+float64 ymid
