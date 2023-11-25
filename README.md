@@ -10,6 +10,8 @@ KERNEL=="ttyUSB*", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60",ATTRS{seria
 
 串口包安装
 pip3 install pyserial
+sudo apt-get install ros-noetic-serial
+
 串口开权限
 ls /dev/tty*
 sudo chmod 777 /dev/ttyACM0

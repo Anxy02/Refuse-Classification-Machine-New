@@ -87,7 +87,7 @@ class Yolo_Dect:
         # xmin    ymin    xmax   ymax  confidence  class    name
 
         boxs = results.pandas().xyxy[0].values
-        self.dectshow(self.color_image, boxs, image.height, image.width)
+        self.dectshow(self.color_image, boxs, image.height, image.width)    #发布的img是白平衡后的RGB视频
 
         cv2.waitKey(3)
 
@@ -122,7 +122,7 @@ class Yolo_Dect:
 
         for box in boxs:
             
-            # tmp_flag = judge_result(box)    # 判断识别结果是否合格
+            # tmp_flag = judge_result(box)    # 判断识别结果是否合格（未使用）
             # if tmp_flag == 0:
             #     count -= 1
             #     continue
@@ -169,13 +169,13 @@ class Yolo_Dect:
 
         
     def switch_class(self,bclass):# 根据yolo返回类别进行类别分类 CNum
-        if bclass == "recycle_can" or bclass == "recycle_bottle" or bclass == "recycle_paper":
+        if bclass == "recycle_can" or bclass == "recycle_bottle" :  #or bclass == "recycle_paper":  纸团取消
             return 1
-        elif bclass == "harm_battery" :
+        elif bclass == "harm_battery" or bclass == "harm_medicine": #新增药品
             return 2
         elif bclass == "kitchen_potato" or bclass == "kitchen_ternip" or bclass == "kitchen_carrot" :
             return 3
-        elif bclass == "others_chip" or bclass == "others_stone":
+        elif bclass == "others_chip" or bclass == "others_stone" or bclass == "others_brick": #新增砖块
             return 4
         else :
             return 999
@@ -189,20 +189,20 @@ class Yolo_Dect:
             return 3
         elif bclass == 'harm_battery':
             return 4
-        elif bclass == 'kitchen_ternip':#白萝卜
+        elif bclass == 'kitchen_ternip': #白萝卜
             return 5
         elif bclass == 'kitchen_carrot':
             return 6
         elif bclass == 'kitchen_potato':
             return 7
-        elif bclass == 'others_chip':#瓷片
+        elif bclass == 'others_chip': #瓷片
             return 8
         elif bclass == 'others_stone':
             return 9
         else :
             return 999
 
-    def judge_result(self,box): #判断检测结果是否合格 默认返回1，不合格返回0
+    def judge_result(self,box): #判断检测结果是否合格 默认返回1，不合格返回0（未使用）
         xmin = np.int64(box[0])
         ymin = np.int64(box[1])
         xmax = np.int64(box[2])

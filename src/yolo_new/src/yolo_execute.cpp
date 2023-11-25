@@ -263,6 +263,7 @@ int main(int argc, char **argv)
       if(isBusy){
         pub_flag.isMoving = isBusy;
 
+        //投入口
         pub_com.close = "ok";
         Com_pub.publish(pub_com);
         pub_com.close = "none";

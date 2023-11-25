@@ -50,8 +50,8 @@ class Find_Color:
         self.flag_sub = rospy.Subscriber("/Flag_pub", Flag, self.flag_callback)#订阅移动状态话题
         self.com_sub = rospy.Subscriber("/Com_pub", Serial_RT, self.com_callback)#订阅分类通讯话题
  
-        self.positionPublisher = rospy.Publisher('/color_position', PositionMsg, queue_size=10) #发布色块的位置（原始数据）
-        self.arm_ik_angle_Publisher = rospy.Publisher('/color_ik_result_new', color_ik_result_Msg, queue_size=10)#发布根据色块位置求解的机械臂关节目标弧度话题
+        self.positionPublisher = rospy.Publisher('/color_position', PositionMsg, queue_size=10) #发布物体的位置（原始数据）
+        self.arm_ik_angle_Publisher = rospy.Publisher('/color_ik_result_new', color_ik_result_Msg, queue_size=10)#发布根据物体位置求解的机械臂关节目标弧度话题
         self.visual_flagPublisher = rospy.Publisher('/visual_func_flag', Int8, queue_size =1)
         self.twist = Twist()
         # self.count=0       #每个色块检测次数的计数值
@@ -69,8 +69,8 @@ class Find_Color:
 
         self.basic_angle= acos( (self.link_c -self.link_h)/self.link_a ) #计算机械臂夹爪可触底的关节基础角度
         #self.basic_angle= 0.5732
-        rospy.loginfo('basic_angle is %s' ,self.basic_angle)
-        rospy.loginfo('find_color_node is init successful')
+        # rospy.loginfo('basic_angle is %s' ,self.basic_angle)
+        rospy.loginfo('find_refuse_node is init successful')
 
      #色块分拣标志位发布函数
     def publish_flag(self):
@@ -87,7 +87,8 @@ class Find_Color:
         global objectNum
 
         objectNum = msg.ONum
-        out_str = self.switchONum(objectNum)
+        # out_str = self.switchONum(objectNum)    #初赛：垃圾名称
+        out_str = msg.sendClass    #决赛：种类
 
         # 等待新模型训练好后将下面放出来  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         if out_str != 'none':
@@ -136,7 +137,7 @@ class Find_Color:
         if IsMoving == 0 :  #机械臂没有运动
             if count > 1:
                 # return      #初赛用！！！！！！！！！！！！！！！！！！！！！！！！决赛放出来！
-                if judge_j < 5: # 延时
+                if judge_j < 5: # 延时,防止识别不全（尽量>5）
                     judge_j += 1
                     return
                 judge_j = 0
@@ -203,7 +204,7 @@ class Find_Color:
         # self.getImageStatus = True
         self.color_image = np.frombuffer(image.data, dtype=np.uint8).reshape(
             image.height, image.width, -1)
-        self.color_image = cv2.cvtColor(self.color_image, cv2.COLOR_BGR2RGB)
+        self.color_image = cv2.cvtColor(self.color_image, cv2.COLOR_BGR2RGB)    # 又转一次RGB？？？？？？？？？？？？
         
         
         
@@ -350,7 +351,7 @@ class Find_Color:
 
     def publishArm_Angle(self, x,y,rotate,count):
 
-        if x > 0.5 or y >0.4: # 如果色块的位置太偏，则认为数据有误
+        if x > 0.5 or y >0.4: # 如果色块的位置太偏，则认为数据有误 (需要检测！！！！！！！！！！！！！
             return 
         #print(x)
         true_x= x*(-0.354)+0.105+self.x_offset  #色块的原始坐标在（左右方向）从左开始是0到0.56，因此减0.28是将0点坐标移到整个画幅的中间
