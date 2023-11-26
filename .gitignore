@@ -1,0 +1,9 @@
+build
+devel
+.vscode
+.catkin_workspace
+src/.vscode
+src/yolo_new/src/.DS_Store
+.DS_Store
+src/web_video_server
+src/CMakeLists.txt.user

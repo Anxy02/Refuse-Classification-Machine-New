@@ -1,0 +1,10 @@
+#! /bin/bash
+
+source /opt/ros/noetic/setup.bash
+source /home/axy/git_ws/Refuse-Classification-Machine-New/devel/setup.bash
+
+gnome-terminal -- bash -c "roslaunch yolo_new yolo.launch"
+sleep 10
+wait
+
+exit 0

@@ -141,7 +141,7 @@ int main(int argc, char **argv)
     hand.setNamedTarget("hand_open"); hand.move(); //sleep(1);  //机械爪张开
     ros::Subscriber color_ik_result_sub=n.subscribe("color_ik_result_new",10,color_ik_result_callback); //订阅色块目标位置对应的关节角度信息
     ros::Publisher Flag_pub = n.advertise<yolo_new::Flag>("Flag_pub",1000);
-    ros::Publisher Com_pub = n.advertise<yolo_new::Serial_RT>("Com_pub",1000);
+    ros::Publisher Com_pub = n.advertise<yolo_new::Serial_RT>("Com_pub",1000);  //发布串口通信消息  cpp -> py、arduino
     yolo_new::Flag pub_flag;
     yolo_new::Serial_RT pub_com;
 
