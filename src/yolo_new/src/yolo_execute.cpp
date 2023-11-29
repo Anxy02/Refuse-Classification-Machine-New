@@ -125,7 +125,7 @@ int main(int argc, char **argv)
     nprivate.param<float>("/link_a", link_a, 0.105);
     nprivate.param<float>("/link_b", link_b, 0.100);
     nprivate.param<float>("/link_c", link_c, 0.175);
-    nprivate.param<float>("/link_h", link_h, 0.09);//0.105
+    nprivate.param<float>("/link_h", link_h, 0.080);//0.105
     i_cb=0;j_cb=0;  //初始化i,j
 
     base_angle=acos((link_c-link_h)/link_a);  //计算机械臂夹爪可触底的关节基础角度
@@ -178,7 +178,7 @@ int main(int argc, char **argv)
       //定义物体方位
       geometry_msgs::Pose pose;
       pose.position.x = 0.1;
-      pose.position.z = 0.36;
+      pose.position.z = 0.42;
       //将形状添加到obj
       obj.primitives.push_back(primitive);
       obj.primitive_poses.push_back(pose);

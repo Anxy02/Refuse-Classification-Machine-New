@@ -135,8 +135,9 @@ class Find_Color:
             count+=1
 
         if IsMoving == 0 :  #机械臂没有运动
+            # 初赛屏蔽机械臂
             if count > 1:
-                # return      #初赛用！！！！！！！！！！！！！！！！！！！！！！！！决赛放出来！
+                # return      #初赛用,屏蔽机械臂！！！！！！！！！！！！！！！！！！！！！！！！决赛放出来！
                 if judge_j < 5: # 延时,防止识别不全（尽量>5）
                     judge_j += 1
                     return
@@ -150,7 +151,7 @@ class Find_Color:
                     Ymin=tmp_box.ymin
                     Ymax=tmp_box.ymax
 
-                    tmp_class=tmp_box.Class     #垃圾文字
+                    tmp_class=tmp_box.Class     #垃圾名称
                     # rospy.loginfo("class is %s ,X is %f, Y is %f", self.Class,Xmid,Ymid)
                     # self.Class = self.switch_class(tmp_box.Class)   #传入垃圾类别并进行判断分类
                     self.Class = tmp_box.CNum   #垃圾类别号码
@@ -163,10 +164,10 @@ class Find_Color:
                     self.publishPosition(angleX,angleY,rotation,count) #发布话题：色块的位置（原始数据）
                     self.publishArm_Angle(angleX,angleY,rotation,count)	 #发布话题：根据色块位置求解的机械臂关节目标弧度话题
                     SingleSortOK = 0    #强制清零
-                    # IsPuting = 0  后续放出来
+                    # IsPuting = 0  投入判断
             
             elif count == 1 and SingleSortOK == 1:  
-                # 进行5次判断防止误进入
+                # 进行多次判断防止误进入
                 if judge_class != msg.bounding_boxes[0].CNum :
                     judge_class = msg.bounding_boxes[0].CNum #垃圾类别
                     judge_i = 0
@@ -207,12 +208,11 @@ class Find_Color:
         self.color_image = cv2.cvtColor(self.color_image, cv2.COLOR_BGR2RGB)    # 又转一次RGB？？？？？？？？？？？？
         
         
-        
         # print(overLoad)
         
 
         length = len(Sort_show)
-        tmp_x = 0
+        tmp_x = -20
         tmp_y = 20
         for i in range(length):
             cv2.putText(self.color_image, Sort_show[i],
@@ -234,7 +234,7 @@ class Find_Color:
 
         # 最终放出来
         cv2.namedWindow('YOLOv5_show', cv2.WINDOW_NORMAL) #WINDOW_NORMAL：可以调整窗口大小
-        cv2.setWindowProperty('YOLOv5_show', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN) #全屏显示
+        # cv2.setWindowProperty('YOLOv5_show', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN) #全屏显示
         
         # cv2.moveWindow("winname",x,y)
             # winname ： 将被设置的窗口的名字。
@@ -285,6 +285,10 @@ class Find_Color:
             return 'others_chip'
         elif num == 9:
             return 'others_stone'
+        elif num == 10:
+            return 'others_brick'
+        elif num == 11:
+            return 'harm_medicine'
         else :
             return 'none'
 

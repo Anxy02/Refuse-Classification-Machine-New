@@ -199,6 +199,10 @@ class Yolo_Dect:
             return 8
         elif bclass == 'others_stone':
             return 9
+        elif bclass == 'others_brick':
+            return 10
+        elif bclass == 'harm_medicine':
+            return 11
         else :
             return 999
 

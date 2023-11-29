@@ -24,7 +24,7 @@ class Serial_COM:
 		self.com_sub = rospy.Subscriber("/Com_pub", Serial_RT, self.com_callback)#订阅识别类别话题
 		self.flagPublisher = rospy.Publisher('/Flag_pub', Flag, queue_size=10) #发布色块的位置（原始数据）
 
-		self.port_open_recv()		#实机测试放出来!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		self.port_open_recv()					#实机测试放出来!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	def com_callback(self,msg):
 		rospy.loginfo("~~~~通信回调收到: %s,%d,%d",msg.sendClass, msg.count,msg.ONum)
@@ -126,6 +126,20 @@ class Serial_COM:
 			elif bcount >1:
 				self.send('1I')
 				rospy.loginfo("1I")
+		elif bONum == 10:
+			if bcount == 1:
+				self.send('0J')
+				rospy.loginfo("0J")
+			elif bcount >1:
+				self.send('1J')
+				rospy.loginfo("1J")
+		elif bONum == 11:
+			if bcount == 1:
+				self.send('0K')
+				rospy.loginfo("0K")
+			elif bcount >1:
+				self.send('1K')
+				rospy.loginfo("1K")
 		else :
 			rospy.loginfo("未发送！！！")
 
@@ -159,7 +173,8 @@ class Serial_COM:
 
 rospy.init_node("Serial_COM")
 rt_serial = Serial_COM()
-# 实际调试放出来！！！！！！！！！！！！！！！！！！！！！！！！
+
+# # 实际调试放出来！！！！！！！！！！！！！！！！！！！！！！！！
 while 1:
 	strRead = ser.read().decode()#"utf-8"
 	if strRead:
