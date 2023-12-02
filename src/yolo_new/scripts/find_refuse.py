@@ -109,9 +109,9 @@ class Find_Color:
             if overLoad == 'A':
                 overLoadStr = 'Machine OverLoad'+'-recycle !!!'
             elif overLoad == 'B':
-                overLoadStr = 'Machine OverLoad'+'-harm !!!'
-            elif overLoad == 'C':
                 overLoadStr = 'Machine OverLoad'+'-kitchen !!!'
+            elif overLoad == 'C':
+                overLoadStr = 'Machine OverLoad'+'-harm !!!'
             elif overLoad == 'D':
                 overLoadStr = 'Machine OverLoad'+'-others !!!'
             overLoad = 'none'
@@ -205,14 +205,14 @@ class Find_Color:
         # self.getImageStatus = True
         self.color_image = np.frombuffer(image.data, dtype=np.uint8).reshape(
             image.height, image.width, -1)
-        self.color_image = cv2.cvtColor(self.color_image, cv2.COLOR_BGR2RGB)    # 又转一次RGB？？？？？？？？？？？？
+        # self.color_image = cv2.cvtColor(self.color_image, cv2.COLOR_BGR2RGB)    # 又转一次RGB？？？？？？？？？？？？
         
         
         # print(overLoad)
         
 
         length = len(Sort_show)
-        tmp_x = -20
+        tmp_x = 0
         tmp_y = 20
         for i in range(length):
             cv2.putText(self.color_image, Sort_show[i],
@@ -266,7 +266,7 @@ class Find_Color:
         return balance_img
 
     
-    def switchONum(self,num):
+    def switchONum(self,num):           # 未使用
         if num == 1:
             return 'recycle_can'
         elif num == 2:
@@ -275,18 +275,22 @@ class Find_Color:
             return 'recycle_paper'
         elif num == 4:
             return 'harm_battery'
-        elif num == 5:#白萝卜
-            return 'kitchen_ternip'
-        elif num == 6:
-            return 'kitchen_carrot'
+        elif num == 5:              #新厨余
+            return 'kitchen'
+        # elif num == 5:#白萝卜
+        #     return 'kitchen_ternip'
+        # elif num == 6:
+        #     return 'kitchen_carrot'
         elif num == 7:
             return 'kitchen_potato'
-        elif num == 8:#瓷片
-            return 'others_chip'
-        elif num == 9:
-            return 'others_stone'
-        elif num == 10:
-            return 'others_brick'
+        elif num == 8:              #新石头
+            return 'others'
+        # elif num == 8:#瓷片
+        #     return 'others_chip'
+        # elif num == 9:
+        #     return 'others_stone'
+        # elif num == 10:
+        #     return 'others_brick'
         elif num == 11:
             return 'harm_medicine'
         else :

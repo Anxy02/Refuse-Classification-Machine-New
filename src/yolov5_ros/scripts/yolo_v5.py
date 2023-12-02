@@ -80,7 +80,7 @@ class Yolo_Dect:
         self.getImageStatus = True
         self.color_image = np.frombuffer(image.data, dtype=np.uint8).reshape(
             image.height, image.width, -1)
-        self.color_image = cv2.cvtColor(self.color_image, cv2.COLOR_BGR2RGB)
+        # self.color_image = cv2.cvtColor(self.color_image, cv2.COLOR_BGR2RGB)
         self.color_image = self.white_balance_1(self.color_image)
         
         results = self.model(self.color_image)
@@ -169,13 +169,13 @@ class Yolo_Dect:
 
         
     def switch_class(self,bclass):# 根据yolo返回类别进行类别分类 CNum
-        if bclass == "recycle_can" or bclass == "recycle_bottle" :  #or bclass == "recycle_paper":  纸团取消
+        if bclass == "recycle_can" or bclass == "recycle_bottle" :  # or bclass == "recycle_paper":  # 纸团取消
             return 1
         elif bclass == "harm_battery" or bclass == "harm_medicine": #新增药品
             return 2
-        elif bclass == "kitchen_potato" or bclass == "kitchen_ternip" or bclass == "kitchen_carrot" :
+        elif bclass == "kitchen_potato" or bclass == "kitchen":
             return 3
-        elif bclass == "others_chip" or bclass == "others_stone" or bclass == "others_brick": #新增砖块
+        elif bclass == "others" or bclass == "recycle_paper": 
             return 4
         else :
             return 999
@@ -189,18 +189,22 @@ class Yolo_Dect:
             return 3
         elif bclass == 'harm_battery':
             return 4
-        elif bclass == 'kitchen_ternip': #白萝卜
+        elif bclass == 'kitchen':   #新厨余
             return 5
-        elif bclass == 'kitchen_carrot':
-            return 6
+        # elif bclass == 'kitchen_ternip': #白萝卜
+        #     return 5
+        # elif bclass == 'kitchen_carrot':
+        #     return 6
         elif bclass == 'kitchen_potato':
             return 7
-        elif bclass == 'others_chip': #瓷片
+        elif bclass == 'others':    #新石头
             return 8
-        elif bclass == 'others_stone':
-            return 9
-        elif bclass == 'others_brick':
-            return 10
+        # elif bclass == 'others_chip': #瓷片
+        #     return 8
+        # elif bclass == 'others_stone':
+        #     return 9
+        # elif bclass == 'others_brick':
+        #     return 10
         elif bclass == 'harm_medicine':
             return 11
         else :
