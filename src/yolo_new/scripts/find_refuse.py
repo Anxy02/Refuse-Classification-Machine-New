@@ -187,6 +187,38 @@ class Find_Color:
                         judge_class = 0
                         judge_i = 0
                     
+            elif count == 1 and SingleSortOK == 0:      # 机械臂抓取单目标  
+                # 进行多次判断防止误进入
+                if judge_class != msg.bounding_boxes[0].CNum :
+                    judge_class = msg.bounding_boxes[0].CNum #垃圾类别
+                    judge_i = 0
+                    return
+                else:
+                    if judge_i < 10:
+                        judge_i += 1
+                        return
+                    else:
+                        rospy.loginfo('单目标抓取：：：%s',msg.bounding_boxes[0].Class)
+                        
+                        self.Class = msg.bounding_boxes[0].CNum #垃圾类别号码
+                        self.ONum = msg.bounding_boxes[0].ONum  #垃圾号码
+
+                        Xmid=msg.bounding_boxes[0].xmid/2
+                        Ymid=msg.bounding_boxes[0].ymid/2
+                        Xmin=msg.bounding_boxes[0].xmin
+                        Xmax=msg.bounding_boxes[0].xmax
+                        Ymin=msg.bounding_boxes[0].ymin
+                        Ymax=msg.bounding_boxes[0].ymax
+
+                        angleX = self.calculateAngleX(Xmid) #做数学转换获取色块在画幅中的坐标
+                        angleY = self.calculateAngleY(Ymid)
+                        rotation=self.calculateRotation(Xmin,Xmax,Ymin,Ymax)#角度位姿
+                        self.publishPosition(angleX,angleY,rotation,1) #发布话题：色块的位置（原始数据）
+                        self.publishArm_Angle(angleX,angleY,rotation,1)	 #发布话题：根据色块位置求解的机械臂关节目标弧度话题
+                        
+                        SingleSortOK = 0    
+                        judge_class = 0
+                        judge_i = 0
 
             else:
                 #没有检测到目标
@@ -392,18 +424,24 @@ class Find_Color:
         pedestal_angle = radians(pedestal_angle) #云台的目标运动角度,radians函数是弧度转角度
         arm_angle      = (caculate_G)  #控制机械臂臂长的目标角度,radians函数是弧度转角度
         hand_angle     = radians(hand_angle) #控制夹取色块旋转的目标角度,radians函数是弧度转角度
+
+        if count == 1:      #单目标
+            Single = 1
+        else:
+            Single = 0
+
         #通过self.Class判断是什么类别的垃圾
         if self.Class==1:
-            ikMsg=color_ik_result_Msg(pedestal_angle,arm_angle,hand_angle,'recycle',count,self.ONum)
+            ikMsg=color_ik_result_Msg(pedestal_angle,arm_angle,hand_angle,'recycle',count,self.ONum,Single)
             self.arm_ik_angle_Publisher.publish(ikMsg)
         if self.Class==2:
-            ikMsg=color_ik_result_Msg(pedestal_angle,arm_angle,hand_angle,'harm',count,self.ONum)
+            ikMsg=color_ik_result_Msg(pedestal_angle,arm_angle,hand_angle,'harm',count,self.ONum,Single)
             self.arm_ik_angle_Publisher.publish(ikMsg)
         if self.Class==3:
-            ikMsg=color_ik_result_Msg(pedestal_angle,arm_angle,hand_angle,'kitchen',count,self.ONum)
+            ikMsg=color_ik_result_Msg(pedestal_angle,arm_angle,hand_angle,'kitchen',count,self.ONum,Single)
             self.arm_ik_angle_Publisher.publish(ikMsg)
         if self.Class==4:
-            ikMsg=color_ik_result_Msg(pedestal_angle,arm_angle,hand_angle,'others',count,self.ONum)
+            ikMsg=color_ik_result_Msg(pedestal_angle,arm_angle,hand_angle,'others',count,self.ONum,Single)
             self.arm_ik_angle_Publisher.publish(ikMsg)
         # rospy.loginfo('py层发送ONum is %d~~~~~~~~~~~~~~~~~~~~~~~~~~~' ,self.ONum)
 

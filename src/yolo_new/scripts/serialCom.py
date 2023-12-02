@@ -22,7 +22,7 @@ class Serial_COM:
 	def __init__(self):
         
 		self.com_sub = rospy.Subscriber("/Com_pub", Serial_RT, self.com_callback)#订阅识别类别话题
-		self.flagPublisher = rospy.Publisher('/Flag_pub', Flag, queue_size=10) #发布色块的位置（原始数据）
+		self.flagPublisher = rospy.Publisher('/Flag_pub', Flag, queue_size=10) #发布状态 
 
 		self.port_open_recv()					#实机测试放出来!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -49,6 +49,14 @@ class Serial_COM:
 		ismoving = 0
 		isputing = 0
 		singleOK = 1
+		OverLoad = "none"
+		flagMSG = Flag(ismoving,isputing,singleOK,OverLoad)
+		self.flagPublisher.publish(flagMSG)
+
+	def single_grasp_pubflag(self):	# 单目标分拣失败后，接收到串口消息X时进行发送
+		ismoving = 0
+		isputing = 0
+		singleOK = 0
 		OverLoad = "none"
 		flagMSG = Flag(ismoving,isputing,singleOK,OverLoad)
 		self.flagPublisher.publish(flagMSG)
@@ -185,6 +193,10 @@ while 1:
 		elif strRead == 'S':
 			rospy.loginfo("单目标返包！")
 			rt_serial.single_pubflag()	
+		elif strRead == 'X':
+			rospy.loginfo("单目标抓取返包！")
+			rt_serial.single_grasp_pubflag()	
+
 rospy.spin()
 
 # 测试用！！！！！！！！！！！！！！！！！！！！！！！！！！！！

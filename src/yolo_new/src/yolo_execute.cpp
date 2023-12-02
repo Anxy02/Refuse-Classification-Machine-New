@@ -61,12 +61,31 @@ void color_ik_result_callback(const yolo_new::color_ik_result_new &msg)
     isBusy = 1;
     isSingle = 1;
   }
+  // 单分类抓取
+  if(isBusy == 0 && msg.Single == 1 && msg.count == 1){
+    tmp_i = 0;
+    ROS_INFO("!!!!!!!!!!!single object :%s !!!!!!!!!!!!",msg.sort.c_str()); 
+    count = 1;
+    ObjectNum[0] = msg.ONum;
+    cb_class[0] = msg.sort; 
+    // single_class = msg.sort.c_str();
+
+    cb_target_data[0][0]=msg.pedestal_angle;  //云台的目标角度
+    cb_target_data[0][1]=msg.arm_angle;       //控制机械臂臂长的目标角度
+    cb_target_data[0][2]=msg.hand_angle;      //控制夹取色块旋转的目标角度
+    ROS_INFO("tmp_i is :%d ",i_cb); 
+    ROS_INFO("cb_target_is  :(%4.2f)-(%4.2f)-(%4.2f)",cb_target_data[i_cb][0],cb_target_data[i_cb][1],cb_target_data[i_cb][2]);
+    ROS_INFO("~~~~~~~~~~~~~~~~~~cpp ONum is :%d ~~~~~~~~~~~~~~~~~~~~~",ObjectNum[i_cb]); 
+
+    isBusy = 1;
+    isSingle = 0;
+  }
   // 多分类
   if(isBusy == 0 && msg.count > 1)
   {
       isSingle = 0;//强制赋值
       //判断只要不是瓶子、罐子、石头就抓取  
-      if(msg.ONum == 1 || msg.ONum == 2 || msg.ONum == 9)
+      if(msg.ONum == 1 || msg.ONum == 2 || msg.ONum == 6)
       {
         tmp_i += 1;
         if (tmp_i == 10)
@@ -91,8 +110,6 @@ void color_ik_result_callback(const yolo_new::color_ik_result_new &msg)
         countFlag = 1;
       }
       
-      // if(i_cb < count)
-      // {
         cb_target_data[i_cb][0]=msg.pedestal_angle;  //云台的目标角度
         cb_target_data[i_cb][1]=msg.arm_angle;       //控制机械臂臂长的目标角度
         cb_target_data[i_cb][2]=msg.hand_angle;      //控制夹取色块旋转的目标角度
@@ -101,13 +118,8 @@ void color_ik_result_callback(const yolo_new::color_ik_result_new &msg)
         cb_class[i_cb] = msg.sort; 
         ObjectNum[i_cb] = msg.ONum;
         ROS_INFO("~~~~~~~~~~~~~~~~~~cpp ONum is :%d ~~~~~~~~~~~~~~~~~~~~~",ObjectNum[i_cb]); 
-        // i_cb+=1;
         
-      // }
-      // else
-      // {
         isBusy = 1;
-      // }
   }
   
 }
