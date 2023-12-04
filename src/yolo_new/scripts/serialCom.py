@@ -27,10 +27,10 @@ class Serial_COM:
 		self.port_open_recv()					#实机测试放出来!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	def com_callback(self,msg):
-		rospy.loginfo("~~~~通信回调收到: %s,%d,%d",msg.sendClass, msg.count,msg.ONum)
+		rospy.loginfo("~~~~通信回调收到: %s,%d,%d~~~~",msg.sendClass, msg.count,msg.ONum)
 		if msg.close == "ok":
 			self.send('1P')
-			rospy.loginfo("~~~~通信关闭盖子: %s",msg.sendClass)
+			rospy.loginfo("~~~~关闭盖子~~~~: %s",msg.sendClass)
 			sleep(1)
 		else:
 			self.send_message(msg.count,msg.sendClass,msg.ONum)
@@ -56,7 +56,7 @@ class Serial_COM:
 	def single_grasp_pubflag(self):	# 单目标分拣失败后，接收到串口消息X时进行发送
 		ismoving = 0
 		isputing = 0
-		singleOK = 0
+		singleOK = 2
 		OverLoad = "none"
 		flagMSG = Flag(ismoving,isputing,singleOK,OverLoad)
 		self.flagPublisher.publish(flagMSG)

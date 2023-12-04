@@ -90,7 +90,7 @@ void color_ik_result_callback(const yolo_new::color_ik_result_new &msg)
         tmp_i += 1;
         if (tmp_i == 10)
           {
-            if(msg.ONum != 1 && msg.ONum != 2) // 非瓶子罐子進行抓取
+            if(msg.ONum != 1 && msg.ONum != 2 /*&& msg.ONum != 7*/) // 非瓶子罐子進行抓取 药品开关
             {
               goto multiSort;
             }

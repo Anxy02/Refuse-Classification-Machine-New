@@ -138,6 +138,7 @@ class Find_Color:
             # 初赛屏蔽机械臂
             if count > 1:
                 # return      #初赛用,屏蔽机械臂！！！！！！！！！！！！！！！！！！！！！！！！决赛放出来！
+                
                 if judge_j < 5: # 延时,防止识别不全（尽量>5）
                     judge_j += 1
                     return
@@ -187,7 +188,7 @@ class Find_Color:
                         judge_class = 0
                         judge_i = 0
                     
-            elif count == 1 and SingleSortOK == 0:      # 机械臂抓取单目标  
+            elif count == 1 and SingleSortOK == 2:      # 机械臂抓取单目标  
                 # 进行多次判断防止误进入
                 if judge_class != msg.bounding_boxes[0].CNum :
                     judge_class = msg.bounding_boxes[0].CNum #垃圾类别
@@ -348,22 +349,22 @@ class Find_Color:
 
     def single_send(self,Class): #单目标发送
         if Class == 1:
-            ikMsg=color_ik_result_Msg(999,999,999,'recycle',1,self.ONum)
+            ikMsg=color_ik_result_Msg(999,999,999,'recycle',1,self.ONum,0)
             self.arm_ik_angle_Publisher.publish(ikMsg)
             print('single_recycle')
 
         elif Class == 2:
-            ikMsg=color_ik_result_Msg(999,999,999,'harm',1,self.ONum)
+            ikMsg=color_ik_result_Msg(999,999,999,'harm',1,self.ONum,0)
             self.arm_ik_angle_Publisher.publish(ikMsg)
             print('single_harm')
 
         elif Class == 3:
-            ikMsg=color_ik_result_Msg(999,999,999,'kitchen',1,self.ONum)
+            ikMsg=color_ik_result_Msg(999,999,999,'kitchen',1,self.ONum,0)
             self.arm_ik_angle_Publisher.publish(ikMsg)
             print('single_kitchen')
 
         elif Class == 4:
-            ikMsg=color_ik_result_Msg(999,999,999,'others',1,self.ONum)
+            ikMsg=color_ik_result_Msg(999,999,999,'others',1,self.ONum,0)
             self.arm_ik_angle_Publisher.publish(ikMsg)
             print('single_others')
             

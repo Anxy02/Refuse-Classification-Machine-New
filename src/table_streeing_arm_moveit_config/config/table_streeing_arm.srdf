@@ -179,17 +179,17 @@
         <joint name="joint_9" value="0.8"/>
     </group_state>
     <group_state name="other_put" group="arm">
-        <joint name="joint_1" value="1.080"/>
-        <joint name="joint_2" value="-0.450"/>
-        <joint name="joint_3" value="-1.00"/>
-        <joint name="joint_4" value="-1.41"/>
+        <joint name="joint_1" value="1.19"/>
+        <joint name="joint_2" value="-0.98"/>
+        <joint name="joint_3" value="-1.02"/>
+        <joint name="joint_4" value="-0.98"/>
         <joint name="joint_5" value="-0.06"/>
     </group_state>
     <group_state name="recycle_put" group="arm">
         <joint name="joint_1" value="-1.25"/>
-        <joint name="joint_2" value="-0.35"/>
+        <joint name="joint_2" value="-0.60"/>
         <joint name="joint_3" value="-0.83"/>
-        <joint name="joint_4" value="-1.55"/>
+        <joint name="joint_4" value="-1.35"/>
         <joint name="joint_5" value="0.00"/>
     </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
