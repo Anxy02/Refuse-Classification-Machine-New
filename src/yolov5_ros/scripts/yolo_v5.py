@@ -30,6 +30,9 @@ class Yolo_Dect:
         # load local repository(YoloV5:v6.0)
         self.model = torch.hub.load(yolov5_path, 'custom',
                                     path=weight_path, source='local')
+
+        # self.model = torch.hub.load('ultralytics/yolov5', 'custom', path=weight_path, force_reload=True)
+
         self.model.cpu()
         # which device will be used
         #if (rospy.get_param('/use_cpu', 'false')):
@@ -47,7 +50,7 @@ class Yolo_Dect:
 
         # image subscribe
         self.color_sub = rospy.Subscriber(image_topic, Image, self.image_callback,
-                                          queue_size=1, buff_size=52428800)
+                                          queue_size=1, buff_size=524288000)
         self.flag_sub = rospy.Subscriber("/Flag_pub", Flag, self.flag_callback)#订阅移动状态话题
         
 
@@ -81,7 +84,8 @@ class Yolo_Dect:
         self.color_image = np.frombuffer(image.data, dtype=np.uint8).reshape(
             image.height, image.width, -1)
         # self.color_image = cv2.cvtColor(self.color_image, cv2.COLOR_BGR2RGB)
-        self.color_image = self.white_balance_1(self.color_image)
+        # self.color_image = self.white_balance_1(self.color_image)
+        # self.color_image = cv2.cvtColor(self.color_image, cv2.COLOR_BGR2RGB)
         
         results = self.model(self.color_image)
         # xmin    ymin    xmax   ymax  confidence  class    name

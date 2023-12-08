@@ -286,6 +286,11 @@ int main(int argc, char **argv)
           pub_com.sendClass = single_class;
           pub_com.ONum = ObjectNum[0];
           Com_pub.publish(pub_com);
+
+          pub_com.count = 0;
+          pub_com.sendClass = "none";
+          pub_com.ONum = 999;
+          
           pub_flag.singleSortOK = 0;
           Flag_pub.publish(pub_flag);
           pub_flag.singleSortOK = 1;  //防止不会再次进入单分类模式

@@ -238,7 +238,7 @@ class Find_Color:
         # self.getImageStatus = True
         self.color_image = np.frombuffer(image.data, dtype=np.uint8).reshape(
             image.height, image.width, -1)
-        # self.color_image = cv2.cvtColor(self.color_image, cv2.COLOR_BGR2RGB)    # 又转一次RGB？？？？？？？？？？？？
+        self.color_image = cv2.cvtColor(self.color_image, cv2.COLOR_BGR2RGB)    # 又转一次RGB？？？？？？？？？？？？
         
         
         # print(overLoad)
